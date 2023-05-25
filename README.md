@@ -1,9 +1,9 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img width=200px height=200px src="https://yt3.googleusercontent.com/ytc/AGIKgqNSx98ETaF1c2swUDVa_UF-nc5ENKXskgzx-9rG7w=s900-c-k-c0x00ffffff-no-rj" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Project Title</h3>
+<h3 align="center">JSON Parser for Titan Advanced Energy Solutions</h3>
 
 <div align="center">
 
