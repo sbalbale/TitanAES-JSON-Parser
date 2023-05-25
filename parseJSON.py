@@ -3,23 +3,23 @@ import json
 import matplotlib.pyplot as plt
 import gzip
 
-
-
-# while True:
-#     try:
-#         fileName = input("Enter the location of the file: ")
-#         with open(fileName) as json_file: # type: ignore
-#             data = json.load(json_file)
-#         break
-#     except (FileNotFoundError):
-#         print("The file you are looking for doesn't exist. Please try again.")
-#         continue
-    
+    # """
+    # This function decompresses a gzip file and writes the decompressed content to a new file.
+    # :param infile: The path to the input file that needs to be decompressed. It should be a binary file
+    # that has been compressed using gzip compression
+    # :param tofile: The parameter "tofile" is a string representing the name of the file that the
+    # decompressed data will be written to
+    # """
 def decompress(infile, tofile):
+   
     with open(infile, 'rb') as inf, open(tofile, 'w', encoding='utf8') as tof:
         decom_str = gzip.decompress(inf.read()).decode('utf-8')
         tof.write(decom_str)
         
+# This code block is prompting the user to enter the location of a file. It then attempts to
+# decompress the file using the `decompress` function defined earlier in the code. If the file is not
+# found, it prints an error message and prompts the user to try again. This process continues until a
+# valid file location is entered and successfully decompressed.
 while True:
     try:
         fileName = input("Enter the location of the file: ")
@@ -29,50 +29,45 @@ while True:
         print("The file you are looking for doesn't exist. Please try again.")
         continue
 
-
-
-# fileName = "TitanAES/LGBD01C1000003_row68_capture278_2023-04-18T17_02_29.json"
-
 # Opening JSON file
+# This code block is opening a JSON file named "temp.json" and loading its contents into a Python
+# dictionary named `data`. The `with` statement is used to ensure that the file is properly closed
+# after its contents have been read. The `json.load()` method is used to parse the JSON data from the
+# file and convert it into a Python dictionary. The `# type: ignore` comment is used to suppress a
+# type checking warning that may be raised by some Python linters.
 with open('temp.json') as json_file: # type: ignore
     data = json.load(json_file)
     
+# These lines of code are extracting specific data from a JSON file and storing it in variables.
 excitationData = data["ExperimentParameters"]["scan_params"]["excitation"]["SignalRaw"]
 transmissionData = data["SignalRaw"]["echoesOutput"]["transmission"][0]
 reflectionData = data["SignalRaw"]["echoesOutput"]["reflection"][0]
 totalTime = data["ExperimentParameters"]["time_window"]
 
+# `graphData` is a dictionary that stores the different types of data needed to create the graphs. The
+# keys of the dictionary are the names of the data types, and the values are the actual data arrays.
+# In this case, the three types of data are "excitationData", "transmissionData", and
+# "reflectionData", and their corresponding values are the arrays `excitationData`,
+# `transmissionData`, and `reflectionData` that were extracted from the JSON file.
 graphData = {
     "excitationData": excitationData,
     "transmissionData": transmissionData,
     "reflectionData": reflectionData
 }
 
-#Single Graph
-# def createGraph(totalTime, data: list, title, xLabel, yLabel):
-#     timeDifference = totalTime / len(data)
-#     time = [0]
-#     while len(time) < len(data):
-#         currentTime = time[-1] + timeDifference
-#         time.append(currentTime)
-        
-#     x = time
-#     y = data
-#     print (time)
-    
-#     plt.plot(x,y)
-#     plt.title(title)
-#     plt.xlabel(xLabel)
-#     plt.ylabel(yLabel)
-#     plt.show()
+# """
+# The function creates a list of evenly spaced time intervals based on the total time and the number
+# of data points.
 
-
-
-# createGraph(totalTime, excitationData, "Excitation Data", "Time", "Amplitude")
-# createGraph(totalTime, transmissionData, "Transmission", "Time", "Amplitude")
-# createGraph(totalTime, reflectionData, "Reflection", "Time", "Amplitude")
-
+# :param totalTime: The total time available for the data to be spread across
+# :param data: The data parameter is a list of values for which we want to create corresponding time
+# values. These values could represent anything, such as measurements taken at different times or
+# events occurring at different intervals
+# :return: a list of time values that are evenly spaced based on the total time and the number of data
+# points provided.
+# """
 def createTimes(totalTime, data):
+    
     timeDifference = totalTime / len(data)
     time = [0]
     while len(time) < len(data):
@@ -80,6 +75,15 @@ def createTimes(totalTime, data):
         time.append(currentTime)
     return time
 
+# """
+# This function creates a graph with three subplots for excitation, transmission, and reflection data.
+
+# :param totalTime: The total time of the data being plotted, in microseconds (μs)
+# :param data: The data parameter is a dictionary containing three keys: "excitationData",
+# "transmissionData", and "reflectionData". The values for each key are lists of amplitude values for
+# the corresponding data type. The totalTime parameter is the total time duration for the data
+# :type data: dict
+# """
 #Multiple Graphs
 def createGraph(totalTime, data: dict):
     
@@ -119,4 +123,11 @@ def createGraph(totalTime, data: dict):
     plt.show()
     
     
+# The `createGraph(totalTime, graphData)` function is creating a graph with three subplots for
+# excitation, transmission, and reflection data. It takes in two parameters: `totalTime`, which is the
+# total time of the data being plotted in microseconds, and `graphData`, which is a dictionary
+# containing three keys: "excitationData", "transmissionData", and "reflectionData". The values for
+# each key are lists of amplitude values for the corresponding data type. The function uses the
+# `createTimes()` function to create a list of evenly spaced time intervals based on the total time
+# and the number of data points, and then plots the data on three subplots using Matplotlib.
 createGraph(totalTime, graphData)
